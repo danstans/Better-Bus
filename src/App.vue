@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <frame/>
-    <main>
-      <router-view></router-view>
-    </main>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -16,19 +14,12 @@ export default {
 </script>
 
 <style>
-body {
-  margin: 0;
-}
+@import url('https://meyerweb.com/eric/tools/css/reset/reset.css');
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-}
-
-main {
-  text-align: center;
-  margin-top: 40px;
 }
 </style>
