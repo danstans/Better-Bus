@@ -26,7 +26,7 @@
   bottom: 0;
   width: 100vw;
   height: 10%;
-  background: blue;
+  background: #35495E;  
 }
 
 .drawer-large {
@@ -34,6 +34,6 @@
   bottom: 0;
   width: 100vw;
   height: 50%;
-  background: blue;
+  background: #35495E;  
 }
 </style>

@@ -22,7 +22,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 .home {
-  height: calc(100vh - 56px);
+  height: 100%;
   width: 100%;
   background: black;
 }
