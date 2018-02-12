@@ -24,6 +24,5 @@ export default {
 .home {
   height: 100%;
   width: 100%;
-  background: black;
 }
 </style>
