@@ -8,7 +8,12 @@
 
       <gmap-marker
         :key="index"
-        v-for="(bus, index) in markers"
+        v-for="(bus, index) in busMarkers"
+        :position="bus.position"
+       />
+       <gmap-marker
+        :key="index"
+        v-for="(bus, index) in busStopMarkers"
         :position="bus.position"
        />
     </gmap-map>
@@ -24,7 +29,17 @@
     },
     data () {
       return {
-        markers: []
+        busMarkers: [],
+        busStopMarkers: [
+          {
+            position: {lat: 36.994270, lng: -122.055512},
+            name: 'Hagar & East Field House'
+          },
+          {
+            position: {lat: 36.990617, lng: -122.066132},
+            name: 'Oakes College'
+          }
+        ]
       }
     },
     methods: {
@@ -40,8 +55,7 @@
               busData.id = bus.id
               markersData.push(busData)
             })
-            this.markers = markersData
-            console.log(this.markers)
+            this.busMarkers = markersData
           }).catch(err => {
             console.log(err)
           })
