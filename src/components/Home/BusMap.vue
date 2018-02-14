@@ -10,11 +10,13 @@
         :key="index"
         v-for="(bus, index) in busMarkers"
         :position="bus.position"
+        icon="static/bus.png"
        />
        <gmap-marker
         :key="index"
         v-for="(bus, index) in busStopMarkers"
         :position="bus.position"
+        icon="static/bus-stop.png"
        />
     </gmap-map>
   </div>
