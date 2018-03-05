@@ -22,4 +22,4 @@ _.each(busesStartTimes, (busStartTimes, busRoute) => {
     }
   })
 })
-fs.writeFileSync('./data.json', JSON.stringify(busData, null, 4), 'utf-8')
+fs.writeFileSync('./data.json', JSON.stringify(busData, null, 2), 'utf-8')
