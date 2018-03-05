@@ -3,8 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import { createStore } from './store'
 import * as VueGoogleMaps from 'vue2-google-maps'
-
+const store = createStore()
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyCFtfMalN3FUzqduYHZWjgOiI7POAAF-n4'
@@ -16,6 +17,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
