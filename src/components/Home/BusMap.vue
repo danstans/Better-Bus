@@ -12,11 +12,13 @@
         :position="bus.position"
         icon="static/bus.png"
        />
+
        <gmap-marker
-        :key="index"
-        v-for="(bus, index) in busStopMarkers"
+        v-for="(bus) in busStopMarkers"
+        :key="bus.id"
         :position="bus.position"
         icon="static/bus-stop.png"
+        @click="showBusTimes(bus.id)"
        />
     </gmap-map>
   </div>
@@ -25,10 +27,17 @@
 <script>
   import axios from 'axios'
   import busStops from './busStops.js'
+  import https from 'https'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'BusMap',
     created () {
       this.getBusMarkers()
+    },
+    computed: {
+      ...mapGetters([
+        'getSpecificBusStop'
+      ])
     },
     data () {
       return {
@@ -37,23 +46,32 @@
       }
     },
     methods: {
-
       getBusMarkers () {
+        const agent = new https.Agent({
+          rejectUnauthorized: false
+        })
         setInterval(function () {
-          axios.get('http://bts.ucsc.edu:8081/location/get').then(response => {
+          axios.get('http://bts.ucsc.edu:8081/location/get', { httpsAgent: agent }).then(response => {
             var markersData = []
             response.data.forEach(bus => {
-              var busData = {}
-              busData.position = {lat: bus.lat, lng: bus.lon}
-              busData.type = bus.type
-              busData.id = bus.id
-              markersData.push(busData)
+              if (bus.type !== 'OUT OF SERVICE/SORRY') {
+                var busData = {}
+                busData.position = {lat: bus.lat, lng: bus.lon}
+                busData.type = bus.type
+                busData.id = bus.id
+                markersData.push(busData)
+              }
             })
             this.busMarkers = markersData
           }).catch(err => {
             console.log(err)
           })
-        }.bind(this), 1000)
+        }.bind(this), 500)
+      },
+      showBusTimes (busID) {
+        console.log(busID)
+        console.log(this.getSpecificBusStop[busID])
+        // this.getSpecificBusStop(busID)
       }
     }
   }
