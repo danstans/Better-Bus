@@ -2,9 +2,9 @@
   <div class="bus-map">
     <modal name="bus-times-modal" height="auto" scrollable>
       {{(selectedBusStop.bus || {}).name}}<br><br>
-      <div v-for="(times, bus) in selectedBusStop.routes">
+      <div v-for="(times, bus) in selectedBusStop.routes" :key="bus">
         {{bus}}
-        <div v-for="(time) in times">
+        <div v-for="(time, index) in times" :key="index">
           {{time.time}}
         </div>
         <br>
@@ -17,15 +17,13 @@
       >
 
       <gmap-marker
-        :key="index"
         v-for="(bus, index) in busMarkers"
         :position="bus.position"
         icon="static/bus.png"
        />
 
        <gmap-marker
-        v-for="(bus) in busStopMarkers"
-        :key="bus.id"
+        v-for="(bus, index) in busStopMarkers"
         :position="bus.position"
         icon="static/bus-stop.png"
         @click="showBusTimes(bus)"
@@ -96,6 +94,6 @@
 
 <style lang="scss" scoped>
 .bus-map {
-  height: 90%;
+  height: 100%;
 }
 </style>
