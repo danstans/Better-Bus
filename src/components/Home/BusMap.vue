@@ -1,5 +1,15 @@
 <template>
   <div class="bus-map">
+    <modal name="bus-times-modal" height="auto" scrollable>
+      {{(selectedBusStop.bus || {}).name}}<br><br>
+      <div v-for="(times, bus) in selectedBusStop.routes">
+        {{bus}}
+        <div v-for="(time) in times">
+          {{time.time}}
+        </div>
+        <br>
+      </div>
+    </modal>
     <gmap-map
       :center="{lat: 36.989455, lng: -122.058457}"
       :zoom="14"
@@ -18,13 +28,14 @@
         :key="bus.id"
         :position="bus.position"
         icon="static/bus-stop.png"
-        @click="showBusTimes(bus.id)"
+        @click="showBusTimes(bus)"
        />
     </gmap-map>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash'
   import axios from 'axios'
   import busStops from './busStops.js'
   import https from 'https'
@@ -42,7 +53,8 @@
     data () {
       return {
         busMarkers: [],
-        busStopMarkers: busStops
+        busStopMarkers: busStops,
+        selectedBusStop: {}
       }
     },
     methods: {
@@ -68,10 +80,15 @@
           })
         }.bind(this), 500)
       },
-      showBusTimes (busID) {
-        console.log(busID)
-        console.log(this.getSpecificBusStop[busID])
-        // this.getSpecificBusStop(busID)
+      showBusTimes (bus) {
+        let routes = _.groupBy(this.getSpecificBusStop[bus.id], 'busRoute')
+
+        this.selectedBusStop = {
+          bus: bus,
+          routes: routes
+        }
+        console.log(this.selectedBusStop.routes)
+        this.$modal.show('bus-times-modal')
       }
     }
   }

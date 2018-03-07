@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VModal from 'vue-js-modal'
 import { createStore } from './store'
 import * as VueGoogleMaps from 'vue2-google-maps'
 const store = createStore()
@@ -11,6 +12,7 @@ Vue.use(VueGoogleMaps, {
     key: 'AIzaSyCFtfMalN3FUzqduYHZWjgOiI7POAAF-n4'
   }
 })
+Vue.use(VModal)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
