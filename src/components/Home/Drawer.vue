@@ -25,8 +25,9 @@
   position: absolute;
   bottom: 0;
   width: 100vw;
-  height: 10%;
-  background: #35495E;  
+  height: 8%;
+  background: #35495E; 
+  opacity: 0.9; 
 }
 
 .drawer-large {
@@ -34,6 +35,7 @@
   bottom: 0;
   width: 100vw;
   height: 50%;
-  background: #35495E;  
+  background: #35495E; 
+  opacity: 0.9; 
 }
 </style>

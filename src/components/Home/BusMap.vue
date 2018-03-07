@@ -11,8 +11,8 @@
       </div>
     </modal>
     <gmap-map
-      :center="{lat: 36.989455, lng: -122.058457}"
-      :zoom="14"
+      :center="{lat: 36.988602, lng: -122.058505}"
+      :zoom="15"
       style="width: 100%; height: 100%"
       >
 
@@ -96,6 +96,6 @@
 
 <style lang="scss" scoped>
 .bus-map {
-  height: 90%;
+  height: 100%;
 }
 </style>
