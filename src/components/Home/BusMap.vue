@@ -24,6 +24,7 @@
 
 <script>
   import axios from 'axios'
+  import busStops from './busStops.js'
   export default {
     name: 'BusMap',
     created () {
@@ -32,16 +33,7 @@
     data () {
       return {
         busMarkers: [],
-        busStopMarkers: [
-          {
-            position: {lat: 36.994270, lng: -122.055512},
-            name: 'Hagar & East Field House'
-          },
-          {
-            position: {lat: 36.990617, lng: -122.066132},
-            name: 'Oakes College'
-          }
-        ]
+        busStopMarkers: busStops
       }
     },
     methods: {
