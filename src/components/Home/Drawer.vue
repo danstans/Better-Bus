@@ -22,10 +22,10 @@
       </form>
     </div>
     <div class="drawer-large" v-else-if="showSignup">
-      <form class="signup-form" @submit.prevent="signUpUser">
         <div class="exit-button" @click="clickClose">
           <button type="submit">Close</button>
         </div>
+      <form class="signup-form" @submit.prevent="signUpUser">
         <span>Sign Up</span>        
         <input v-model="signup.email" type="text" placeholder="email">
         <input v-model="signup.password" type="password" placeholder="Password">
@@ -130,19 +130,20 @@
   justify-content: center;
   align-items: center;
 
-  .signup-form {
+  .exit-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .signup-form, .login-form {
     box-sizing: border-box;
     height: 80%;
     width: 80%;
     display: grid;
-    grid-template-rows: 5px 25% 40px 40px 1fr; 
+    grid-template-rows: 25% 40px 40px 1fr; 
     grid-row-gap: 16px;
 
-    .exit-button {
-      margin-top: -10px;
-      padding-left: 450px;
-
-    }
     span {
       display: flex;
       justify-content: center;
@@ -161,36 +162,36 @@
     }
   }
 
-  .login-form {
-    box-sizing: border-box;
-    height: 80%;
-    width: 80%;
-    display: grid;
-    grid-template-rows: 5px 25% 40px 40px 1fr; 
-    grid-row-gap: 16px;
+  // .login-form {
+  //   box-sizing: border-box;
+  //   height: 80%;
+  //   width: 80%;
+  //   display: grid;
+  //   grid-template-rows: 5px 25% 40px 40px 1fr; 
+  //   grid-row-gap: 16px;
 
-    .exit-button {
-      margin-top: -10px;
-      padding-left: 450px;
+  //   .exit-button {
+  //     margin-top: -10px;
+  //     padding-left: 450px;
 
-    }
-    span {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;  
-    }
+  //   }
+  //   span {
+  //     display: flex;
+  //     justify-content: center;
+  //     align-items: center;
+  //     font-size: 24px;  
+  //   }
 
-    .login-button {
-      position: relative;
+  //   .login-button {
+  //     position: relative;
 
-      button {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-      }
-    }
-  }
+  //     button {
+  //       position: absolute;
+  //       right: 15px;
+  //       top: 15px;
+  //     }
+  //   }
+  // }
 
 }
 </style>

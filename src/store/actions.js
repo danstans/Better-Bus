@@ -17,7 +17,7 @@ export default {
     console.log(`The value of username is ${payload.email}`)
     firebase.auth().signInWithEmailAndPassword(payload.email, payload.password).then(response => {
       console.log('user logged in')
-      commit('SET_USER_STATE', true)
+      commit('SET_USER_STATE', firebase.auth().currentUser.uid)
     }).catch(err => {
       console.log(err)
     })

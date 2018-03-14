@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  userState: false,
+  userState: null,
   busStopSchedule: {
   "1341": [
     {

@@ -1,35 +1,55 @@
 <template>
-  <div class="bus-map">
-    <modal name="bus-times-modal" height="auto" scrollable>
-      {{(selectedBusStop.bus || {}).name}}<br><br>
-      <div v-for="(times, bus) in selectedBusStop.routes" :key="bus">
-        {{bus}}
-        <div v-for="(time, index) in times" :key="index">
-          {{time.time}}
+    <div class="bus-map">
+      <modal class="busstop-modal" width="80%" height="60%" name="bus-times-modal">
+        <div class="busstop-nav">
+          <span @click="showBusSchedule = true">Bus Schedule</span>
+          <span @click="showBusSchedule = false">Bus Stop Information</span>
         </div>
-        <br>
-      </div>
-    </modal>
-    <gmap-map
-      :center="{lat: 36.988602, lng: -122.058505}"
-      :zoom="15"
-      style="width: 100%; height: 100%"
-      >
+        <div class="busstop-contents">
+          <span class="busstop-name">
+            {{(selectedBusStop.bus || {}).name}}          
+          </span>
+          <div v-if="showBusSchedule">
+            <div v-for="(times, bus) in selectedBusStop.routes" :key="bus">
+              {{bus}}
+              <div v-for="(time, index) in times" :key="index">
+                {{time.time}}
+              </div>
+            </div>
+          </div>
 
-      <gmap-marker
-        v-for="(bus, index) in busMarkers"
-        :position="bus.position"
-        icon="static/bus.png"
-       />
+          <div class="stop-information" v-else>
+            <div class="bus-density">
+              <span>Bus Stop Density:</span>
+              <span>:D</span>
+            </div>
+            <div class="bus-density-selector">
+              this is the bus density selector
+            </div>
+          </div>
+        </div>
+      </modal>
 
-       <gmap-marker
-        v-for="(bus, index) in busStopMarkers"
-        :position="bus.position"
-        icon="static/bus-stop.png"
-        @click="showBusTimes(bus)"
-       />
-    </gmap-map>
-  </div>
+      <gmap-map
+        :center="{lat: 36.988602, lng: -122.058505}"
+        :zoom="14"
+        :zoomControl="false"
+        style="width: 100%; height: 100%"
+        >
+        <gmap-marker
+          v-for="(bus, index) in busMarkers"
+          :position="bus.position"
+          icon="static/bus.png"
+        />
+
+        <gmap-marker
+          v-for="(bus, index) in busStopMarkers"
+          :position="bus.position"
+          icon="static/bus-stop.png"
+          @click="showBusTimes(bus)"
+        />
+      </gmap-map>
+    </div>
 </template>
 
 <script>
@@ -52,7 +72,8 @@
       return {
         busMarkers: [],
         busStopMarkers: busStops,
-        selectedBusStop: {}
+        selectedBusStop: {},
+        showBusSchedule: true
       }
     },
     methods: {
@@ -85,7 +106,7 @@
           bus: bus,
           routes: routes
         }
-        console.log(this.selectedBusStop.routes)
+        this.showBusSchedule = true
         this.$modal.show('bus-times-modal')
       }
     }
@@ -95,5 +116,39 @@
 <style lang="scss" scoped>
 .bus-map {
   height: 100%;
+}
+
+.busstop-modal {
+  .busstop-nav {
+    height: 40px;
+    background: white;
+    background: blue;
+    display: flex;
+
+    >span {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
+
+  .busstop-contents {
+    background: yellow;
+    height: calc(100% - 40px);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+
+    .busstop-name {
+      background: grey;
+      min-width: 100%;
+      min-height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 </style>

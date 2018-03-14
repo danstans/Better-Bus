@@ -1,16 +1,22 @@
 <template>
   <div class="home">
     <bus-map/>
-    <drawer/>
+    <drawer v-if="!getUserState"/>
   </div>
 </template>
 
 <script>
 import Drawer from './Home/Drawer'
 import BusMap from './Home/BusMap'
+import { mapGetters } from 'vuex'
 export default {
   name: 'home',
   components: { Drawer, BusMap },
+  computed: {
+    ...mapGetters([
+      'getUserState'
+    ])
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js PWA'
