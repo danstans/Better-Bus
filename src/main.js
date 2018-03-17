@@ -6,6 +6,10 @@ import router from './router'
 import VModal from 'vue-js-modal'
 import { createStore } from './store'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 const store = createStore()
 Vue.use(VueGoogleMaps, {
   load: {
@@ -13,6 +17,7 @@ Vue.use(VueGoogleMaps, {
   }
 })
 Vue.use(VModal)
+Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

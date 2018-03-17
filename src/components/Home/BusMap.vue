@@ -1,24 +1,13 @@
 <template>
     <div class="bus-map">
-      <modal class="busstop-modal" width="80%" height="60%" name="bus-times-modal">
-        <div class="busstop-nav">
-          <span @click="showBusSchedule = true">Bus Schedule</span>
-          <span @click="showBusSchedule = false">Bus Stop Information</span>
-        </div>
-        <div class="busstop-contents">
-          <span class="busstop-name">
-            {{(selectedBusStop.bus || {}).name}}          
-          </span>
-          <div v-if="showBusSchedule">
-            <div v-for="(times, bus) in selectedBusStop.routes" :key="bus">
-              {{bus}}
-              <div v-for="(time, index) in times" :key="index">
-                {{time.time}}
-              </div>
-            </div>
-          </div>
-
-          <div class="stop-information" v-else>
+      <modal class="busstop-modal" width="80%" height="80%" name="bus-times-modal">
+        <b-tabs>
+          <b-tab title="Bus Schedule" active>
+            <b-card :title="(selectedBusStop.bus || {}).name">
+              <b-table :items="selectedBusStop.tableItems"></b-table>
+            </b-card>
+          </b-tab>
+          <b-tab title="Bus Stop Information" >
             <div class="bus-density">
               <span>Bus Stop Density:</span>
               <span>:D</span>
@@ -26,8 +15,8 @@
             <div class="bus-density-selector">
               this is the bus density selector
             </div>
-          </div>
-        </div>
+          </b-tab>
+        </b-tabs>
       </modal>
 
       <gmap-map
@@ -53,10 +42,10 @@
 </template>
 
 <script>
-  import _ from 'lodash'
   import axios from 'axios'
   import busStops from './busStops.js'
   import https from 'https'
+  import moment from 'moment'
   import { mapGetters } from 'vuex'
   export default {
     name: 'BusMap',
@@ -100,11 +89,28 @@
         }.bind(this), 500)
       },
       showBusTimes (bus) {
-        let routes = _.groupBy(this.getSpecificBusStop[bus.id], 'busRoute')
+        let routes = this.getSpecificBusStop[bus.id]
+        routes = routes.sort((a, b) => {
+          if (moment(a.time, 'hh:mmA').isBefore(moment(b.time, 'hh:mmA'))) {
+            return -1
+          } else if (moment(b.time, 'hh:mmA').isBefore(moment(a.time, 'hh:mmA'))) {
+            return 1
+          }
+          return 0
+        })
+        let tableItems = []
+        let now = moment('4:55PM', 'hh:mmA')
+        for (let item of routes) {
+          if (moment(item.time, 'hh:mmA').isAfter(now)) {
+            tableItems.push({time: item.time, route: item.busRoute}) // eslint-disable-line
+          }
+        }
+        tableItems = tableItems.slice(0, 10)
 
         this.selectedBusStop = {
-          bus: bus,
-          routes: routes
+          bus,
+          routes,
+          tableItems
         }
         this.showBusSchedule = true
         this.$modal.show('bus-times-modal')
