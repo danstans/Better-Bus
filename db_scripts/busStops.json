@@ -4,3 +4,60 @@
   "even10": ["1341", "1342","2669","1501","2101","2102","1617","1616","1615","1509","2448","2516","1505","2328","2739","1510","2497"],
   "even16": ["1341", "1342","2669","1501","2101","2102","1617","1616","1615","1509","2448","2516","1505","2328","2739","1510","2376"]
 }
+
+{
+  "busstops": {
+    "2375": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2374": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "1385": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2670": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2671": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2672": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2673": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2674": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2675": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2676": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2677": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2678": {
+      "avgRating": 2,
+      "numReponses": 20
+    },
+    "2679": {
+      "avgRating": 2,
+      "numReponses": 20
+    }
+  }
+}

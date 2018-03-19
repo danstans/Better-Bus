@@ -1,20 +1,32 @@
 <template>
     <div class="bus-map">
       <modal class="busstop-modal" width="80%" height="80%" name="bus-times-modal">
-        <b-tabs>
+        <b-tabs class="busstop-modal-tabs">
           <b-tab title="Bus Schedule" active>
             <b-card :title="(selectedBusStop.bus || {}).name">
               <b-table :items="selectedBusStop.tableItems"></b-table>
             </b-card>
           </b-tab>
-          <b-tab title="Bus Stop Information" >
-            <div class="bus-density">
-              <span>Bus Stop Density:</span>
-              <span>:D</span>
-            </div>
-            <div class="bus-density-selector">
-              this is the bus density selector
-            </div>
+          <b-tab class="busstop-modal-tab" title="Bus Stop Information" >
+            <b-card :title="(selectedBusStop.bus || {}).name">
+              <div class="bus-density" >
+                <div class="bus-density-info">
+                  <span>Bus Stop Density:</span>
+                  <div class="current-density">
+                    <!-- <span>😺</span> -->
+                    <span>{{this.getDensityEmoji}}</span>    
+                  </div>
+                </div>
+                <div class="bus-density-selector">
+                  <div>
+                    <span @click="selectCat(0)">😿</span>
+                    <span @click="selectCat(1)">😾</span>
+                    <span @click="selectCat(2)">😺</span>
+                    <span @click="selectCat(3)">😻</span>
+                  </div>
+                </div>
+              </div>
+            </b-card>
           </b-tab>
         </b-tabs>
       </modal>
@@ -28,7 +40,7 @@
         <gmap-marker
           v-for="(bus, index) in busMarkers"
           :position="bus.position"
-          icon="static/bus.png"
+          :icon="bus.img"
         />
 
         <gmap-marker
@@ -46,7 +58,7 @@
   import busStops from './busStops.js'
   import https from 'https'
   import moment from 'moment'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   export default {
     name: 'BusMap',
     created () {
@@ -54,7 +66,9 @@
     },
     computed: {
       ...mapGetters([
-        'getSpecificBusStop'
+        'getSpecificBusStop',
+        'getUserState',
+        'getDensityEmoji'
       ])
     },
     data () {
@@ -62,10 +76,14 @@
         busMarkers: [],
         busStopMarkers: busStops,
         selectedBusStop: {},
-        showBusSchedule: true
+        showBusSchedule: true,
+        currentlySelectedBusStop: null
       }
     },
     methods: {
+      ...mapActions([
+        'updateFirebaseDatabase'
+      ]),
       getBusMarkers () {
         const agent = new https.Agent({
           rejectUnauthorized: false
@@ -78,6 +96,11 @@
                 var busData = {}
                 busData.position = {lat: bus.lat, lng: bus.lon}
                 busData.type = bus.type
+                if (bus.type === 'LOOP') {
+                  busData.img = 'static/lower.png'
+                } else if (bus.type === 'UPPER CAMPUS') {
+                  busData.img = 'static/upper.png'
+                }
                 busData.id = bus.id
                 markersData.push(busData)
               }
@@ -99,7 +122,7 @@
           return 0
         })
         let tableItems = []
-        let now = moment('4:55PM', 'hh:mmA')
+        let now = moment()
         for (let item of routes) {
           if (moment(item.time, 'hh:mmA').isAfter(now)) {
             tableItems.push({time: item.time, route: item.busRoute}) // eslint-disable-line
@@ -113,7 +136,31 @@
           tableItems
         }
         this.showBusSchedule = true
+        this.currentlySelectedBusStop = bus.id
         this.$modal.show('bus-times-modal')
+      },
+      selectCat (catVal) {
+        var catEmoji = ''
+        switch (catVal) {
+          case 0:
+            catEmoji = '😿'
+            break
+          case 1:
+            catEmoji = '😾'
+            break
+          case 2:
+            catEmoji = '😺'
+            break
+          case 3:
+            catEmoji = '😻'
+            break
+        }
+        this.updateFirebaseDatabase({'catVal': catVal, 'busID': this.currentlySelectedBusStop})
+        this.$toasted.show(`${catEmoji} response logged`, {
+          theme: 'outline',
+          position: 'top-center',
+          duration: 5000
+        })
       }
     }
   }
@@ -125,35 +172,53 @@
 }
 
 .busstop-modal {
-  .busstop-nav {
-    height: 40px;
-    background: white;
-    background: blue;
-    display: flex;
 
-    >span {
-      width: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-    }
-  }
+  .busstop-modal-tabs {
+    height: 100%;
 
-  .busstop-contents {
-    background: yellow;
-    height: calc(100% - 40px);
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
+    .busstop-modal-tab {
+      height: 100%;
 
-    .busstop-name {
-      background: grey;
-      min-width: 100%;
-      min-height: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      .bus-density {
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+
+        .bus-density-info {
+
+          span {
+            height: 30px;
+          }
+          
+          .current-density {
+            height: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 96px;
+          }
+        }
+
+        .bus-density-selector {
+          flex-grow: 1;
+          display: flex;
+          align-items: flex-end;
+          
+          >div {
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            font-size: 40px;
+            height: 120px;
+
+            span {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+      }
     }
   }
 }

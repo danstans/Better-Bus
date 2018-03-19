@@ -9,6 +9,7 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import Toasted from 'vue-toasted'
 
 const store = createStore()
 Vue.use(VueGoogleMaps, {
@@ -16,6 +17,7 @@ Vue.use(VueGoogleMaps, {
     key: 'AIzaSyCFtfMalN3FUzqduYHZWjgOiI7POAAF-n4'
   }
 })
+Vue.use(Toasted)
 Vue.use(VModal)
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
