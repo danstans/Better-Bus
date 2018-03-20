@@ -13,8 +13,8 @@
                 <div class="bus-density-info">
                   <span>Bus Stop Density:</span>
                   <div class="current-density">
-                    <!-- <span>😺</span> -->
-                    <span>{{this.getDensityEmoji}}</span>    
+                    <span>{{busstopDensityEmoji}}</span>
+                    <!-- <span>{{this.getDensityEmoji}}</span>     -->
                   </div>
                 </div>
                 <div class="bus-density-selector">
@@ -58,6 +58,7 @@
   import busStops from './busStops.js'
   import https from 'https'
   import moment from 'moment'
+  import { firebase } from '../../store/utils/firebase'
   import { mapGetters, mapActions } from 'vuex'
   export default {
     name: 'BusMap',
@@ -77,7 +78,26 @@
         busStopMarkers: busStops,
         selectedBusStop: {},
         showBusSchedule: true,
-        currentlySelectedBusStop: null
+        currentlySelectedBusStop: null,
+        busstopDensityEmoji: 0
+      }
+    },
+    watch: {
+      'currentlySelectedBusStop': {
+        handler: function (after, before) {
+          firebase.database().ref(`/busstops/${after}`).on('value', function (snapshot) {
+            var avgRating = snapshot.val().avgRating
+            if (avgRating > 0 && avgRating < 1) {
+              this.busstopDensityEmoji = '😿'
+            } else if (avgRating > 1 && avgRating < 2) {
+              this.busstopDensityEmoji = '😾'
+            } else if (avgRating > 2 && avgRating < 3) {
+              this.busstopDensityEmoji = '😺'
+            } else if (avgRating > 3 && avgRating < 4) {
+              this.busstopDensityEmoji = '😻'
+            }
+          }.bind(this))
+        }
       }
     },
     methods: {

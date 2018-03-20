@@ -35,7 +35,6 @@ export default {
   updateFirebaseDatabase: function ({commit}, payload) {
     console.log(`The catval is ${payload.catVal} and the busID is ${payload.busID}`)
     firebase.database().ref(`/busstops/${payload.busID}`).once('value').then(response => {
-      console.log(response.val().avgRating)
       var newAvg = ((response.val().avgRating * response.val().numResponses) + payload.catVal) / (response.val().numResponses + 1)
       console.log(`The new average is ${newAvg}`)
       return firebase.database().ref(`/busstops/${payload.busID}`).set({
