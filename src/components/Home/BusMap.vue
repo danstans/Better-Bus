@@ -46,7 +46,7 @@
         <gmap-marker
           v-for="(bus, index) in busStopMarkers"
           :position="bus.position"
-          icon="static/bus-stop.png"
+          :icon="bus.type === 'odd' ? 'static/bus-stop-odd.png' : 'static/bus-stop-even.png'"
           @click="showBusTimes(bus)"
         />
       </gmap-map>
