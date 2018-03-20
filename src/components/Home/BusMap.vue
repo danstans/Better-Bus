@@ -112,7 +112,7 @@
           axios.get('http://bts.ucsc.edu:8081/location/get', { httpsAgent: agent }).then(response => {
             var markersData = []
             response.data.forEach(bus => {
-              if (bus.type !== 'OUT OF SERVICE/SORRY') {
+              if (bus.type !== 'OUT OF SERVICE/SORRY' && bus.type !== 'LOOP OUT OF SERVICE AT BARN THEATER') {
                 var busData = {}
                 busData.position = {lat: bus.lat, lng: bus.lon}
                 busData.type = bus.type
