@@ -17,7 +17,7 @@
                     <!-- <span>{{this.getDensityEmoji}}</span>     -->
                   </div>
                 </div>
-                <div class="bus-density-selector">
+                <div class="bus-density-selector" v-if="getUserState">
                   <div>
                     <span @click="selectCat(0)">😿</span>
                     <span @click="selectCat(1)">😾</span>
@@ -87,13 +87,13 @@
         handler: function (after, before) {
           firebase.database().ref(`/busstops/${after}`).on('value', function (snapshot) {
             var avgRating = snapshot.val().avgRating
-            if (avgRating > 0 && avgRating < 1) {
+            if (avgRating >= 0 && avgRating < 0.75) {
               this.busstopDensityEmoji = '😿'
-            } else if (avgRating > 1 && avgRating < 2) {
+            } else if (avgRating > 0.75 && avgRating < 1.5) {
               this.busstopDensityEmoji = '😾'
-            } else if (avgRating > 2 && avgRating < 3) {
+            } else if (avgRating > 1.5 && avgRating < 2.25) {
               this.busstopDensityEmoji = '😺'
-            } else if (avgRating > 3 && avgRating < 4) {
+            } else if (avgRating > 2.25 && avgRating < 3) {
               this.busstopDensityEmoji = '😻'
             }
           }.bind(this))
@@ -112,7 +112,7 @@
           axios.get('http://bts.ucsc.edu:8081/location/get', { httpsAgent: agent }).then(response => {
             var markersData = []
             response.data.forEach(bus => {
-              if (bus.type !== 'OUT OF SERVICE/SORRY') {
+              if (bus.type !== 'OUT OF SERVICE/SORRY' && bus.type !== 'LOOP OUT OF SERVICE AT BARN THEATER') {
                 var busData = {}
                 busData.position = {lat: bus.lat, lng: bus.lon}
                 busData.type = bus.type
@@ -179,7 +179,7 @@
         this.$toasted.show(`${catEmoji} response logged`, {
           theme: 'outline',
           position: 'top-center',
-          duration: 5000
+          duration: 1000
         })
       }
     }
